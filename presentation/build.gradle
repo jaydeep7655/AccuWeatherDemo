@@ -1,0 +1,106 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.example.accuweatherdemo"
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+        buildConfigField 'String', 'BASE_URL', properties.getProperty("BASE_URL", "")
+        buildConfigField "String", "ACCUWEATHER_API_KEY", properties.getProperty("ACCUWEATHER_API_KEY", "")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':data')
+    implementation project(':core')
+    implementation deps.ktx
+    implementation deps.appcompat
+    implementation deps.material
+    implementation deps.constraintLayout
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
+    testImplementation group: 'com.nhaarman.mockitokotlin2', name: 'mockito-kotlin', version: '2.0.0-alpha01'
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '4.8.0'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.1'
+    testImplementation "org.mockito:mockito-inline:3.11.2"
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+    //UI
+    implementation deps.cardview
+    implementation deps.recyclerview
+
+    //ViewModel
+    implementation deps.viewModel
+
+    //KOIN
+    implementation deps.koin
+    testImplementation "io.insert-koin:koin-test:3.2.1"
+    // Koin main features for Android
+    implementation deps.koinAndroid
+    // No more koin-android-viewmodel, koin-android-scope, koin-android-fragment
+    // Java Compatibility
+    //implementation "io.insert-koin:koin-android-compat:3.2.1"
+    // Jetpack WorkManager
+    //implementation "io.insert-koin:koin-androidx-workmanager:3.2.1"
+    // Navigation Graph
+    //implementation "io.insert-koin:koin-androidx-navigation:3.2.1"
+
+    //Coroutines
+    implementation deps.coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+
+    //Retrofit
+    implementation deps.retrofit
+    implementation deps.gsonConverter
+    //implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
+    //implementation "com.squareup.moshi:moshi:1.9.3"
+    //kapt "com.squareup.moshi:moshi-kotlin-codegen:1.9.3"
+    implementation deps.interceptor
+
+    implementation 'com.android.support:multidex:1.0.3'
+
+    // Navigation Components
+    implementation "androidx.navigation:navigation-fragment-ktx:2.6.0-alpha01"
+    implementation "androidx.navigation:navigation-ui-ktx:2.6.0-alpha01"
+
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    kapt 'com.github.bumptech.glide:compiler:4.14.2'
+
+}
